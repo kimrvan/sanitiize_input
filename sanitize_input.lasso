@@ -1,10 +1,13 @@
 <?lasso
 
 /*
-	Method sanitizes input and limits output to field size in database
+	'sanitize' type cleans up user input, like white space, and limits output to field size in database
 
-	Example that only allows apostrophes, hyphens and spaces in 'firstname' field:
-	var(firstname = sanitize(string(web_request->param('fname')), -fieldtype='name'))
+	EXAMPLE
+
+	1) Allow only apostrophes, hyphens and spaces in 'firstname' field:
+		var(firstname = sanitize(string(web_request->param('fname')), -fieldtype='name'))
+
 */
 
 
