@@ -5,7 +5,7 @@
 
 	EXAMPLE
 
-	1) Allow only apostrophes, hyphens and spaces in 'firstname' field:
+	1) Allows only apostrophes, hyphens and spaces in 'firstname' field:
 		var(firstname = sanitize(string(web_request->param('fname')), -fieldtype='name'))
 
 */
@@ -45,11 +45,15 @@ define sanitize => type {
 		case('email')
 			.output = regexp(-find=`[~!#$%^&*()+={}\[\]|:;\"\'<\,>\?\/≤≥]`, -input=.output)->replaceall // Allow period, hyphen, underscore and @ in email
 			(.output->size > 60) ? .output = .output->substring(1, 60)
+		case('filename')
+			.output = regexp(-find=`[~!@#$%^&*()+={}\[\]|:;\"\'<\,>\?\/≤≥]`, -input=.output)->replaceall // Allow period, hyphen and underscore
 		case('html')
 			.output = regexp(-find=`[|]`, -input=.output)->replaceall
 		case('name')
 			.output = regexp(-find=`[~!@#$%^&*()_\+={}\[\]|:;\"<\,>\.?\/≤≥]`, -input=.output)->replaceall // Allow apostrophes, hyphens and spaces
 			(.output->size > 30) ? .output = .output->substring(1, 30)
+		case('nojavascript')
+			.output = .output->asCopy // Just trims the user input and removes any javascript
 		case('phone')
 			.output = regexp(-find=`\D+`, -input=.output)->replaceall // Allow only digits
 			(.output->size > 10) ? .output = .output->substring(1, 10)
